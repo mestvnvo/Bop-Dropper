@@ -55,7 +55,7 @@ def get_bop_recs(bop_id):
 
         # WE DO WANT ABILITY TO EMBED ENTIRE PLAYLISTS SO WE CAN EXPAND QUICKER
 
-    return render_template("index.html",bop_info=bop_info, recommendations=recommendations, in_db=in_db)
+    return render_template("index.html",bop_info=bop_info, recommendations=recommendations[1::], in_db=in_db)
 
 if __name__ == "__main__":
     app.run(debug=True)
