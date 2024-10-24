@@ -7,19 +7,25 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
 </head>
 <body>
-    <h1>Bop Dropper</h1>
+    <h1><a href="http://127.0.0.1:5000/">Bop Dropper</a></h1>
     <div class="bop_link">
         <form method="POST">
-            <p><label for="bop_link">Bop Link</label></p>
-            <p><input type="text" name="bop_link" placeholder="Add Spotify Link..."></p>
+            <p><label for="bop_link">Add Bop Link</label></p>
+            <p><input type="text" name="bop_link" placeholder="https://open.spotify.com/track/..."></p>
             <button type="submit">Search</button>
         </form>
     </div>
 
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% else %}
+    <p></p>
+    {% endif %}
+
     {% if bop_info %}
         <div>
             <h2>Searching Bop Recs</h2>
-            <p>Bop: {{ bop_info.bop_name }}</p>
+            <p>Bop: {{ bop_info.name }}</p>
             <p>Artists: {{ bop_info.artists | join(', ') }}</p>
         </div>
     {% else %}
@@ -27,21 +33,26 @@
     {% endif %}
 
     {% if recommendations %}
-    <ol>
-        {% for rec in recommendations %}
-            <li>
-                <p>Similarity Score: {{ rec.score }}</p>
-                <iframe style="border-radius:12px" 
-                            src="https://open.spotify.com/embed/track/{{ rec.id }}?utm_source=generator&theme=0"
-                            width="50%" height="100" frameBorder="0" allowfullscreen=""
-                            allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                            loading="lazy">
-                </iframe>
-            </li>
-        {% endfor %}
-    </ol>
+            <ol>
+                {% for rec in recommendations %}
+                    <li>
+                        <p>Similarity Score: {{ rec.score }}</p>
+                        <iframe style="border-radius:12px" 
+                                    src="https://open.spotify.com/embed/track/{{ rec.id }}?utm_source=generator&theme=0"
+                                    width="50%" height="100" frameBorder="0" allowfullscreen=""
+                                    allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                    loading="lazy">
+                        </iframe>
+                    </li>
+                {% endfor %}
+            </ol>
+        
     {% else %}
-        <p></p>
+        {% if in_db %}
+            <p></p>
+        {% else %}
+            <h3>Song not in database...</h3>
+        {% endif %}
     {% endif %}
 </body>
 </html>
