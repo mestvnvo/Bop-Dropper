@@ -3,8 +3,10 @@ from pymongo import MongoClient
 import utils
 
 app = Flask(__name__)
-
 client = MongoClient("localhost", 27017)
+db = client.bop_database
+bops = db.bops
+access_token = utils.generate_access_token()
 
 @app.route("/",methods=["GET","POST"])
 def index():
@@ -38,9 +40,6 @@ def get_bop_recs(bop_id):
                        for id, score in zip(ids, scores)]
 
     return render_template("index.html",bop_info=bop_info, recommendations=recommendations)
-
-db = client.bop_database
-bops = db.bops
 
 if __name__ == "__main__":
     app.run(debug=True)

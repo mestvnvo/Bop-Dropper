@@ -18,30 +18,30 @@
 
     {% if bop_info %}
         <div>
-            <h2>Searching Track Recs</h2>
+            <h2>Searching Bop Recs</h2>
             <p>Bop: {{ bop_info.bop_name }}</p>
             <p>Artists: {{ bop_info.artists | join(', ') }}</p>
         </div>
     {% else %}
-        <p>No song information available.</p>
+        <p></p>
     {% endif %}
 
     {% if recommendations %}
     <ol>
         {% for rec in recommendations %}
             <li>
+                <p>Similarity Score: {{ rec.score }}</p>
                 <iframe style="border-radius:12px" 
-                            src="https://open.spotify.com/embed/track/{{ rec.id }}?utm_source=generator"
+                            src="https://open.spotify.com/embed/track/{{ rec.id }}?utm_source=generator&theme=0"
                             width="50%" height="100" frameBorder="0" allowfullscreen=""
                             allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                             loading="lazy">
                 </iframe>
-                <p>Similarity Score: {{ rec.score }}</p>
             </li>
         {% endfor %}
     </ol>
-    <!-- {% else %}
-        <p>No recommendations available.</p>
-    {% endif %} -->
+    {% else %}
+        <p></p>
+    {% endif %}
 </body>
 </html>
