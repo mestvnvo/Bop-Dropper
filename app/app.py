@@ -32,10 +32,10 @@ def get_bop_recs(bop_id):
     }
 
     # get recs
-    names, artists, scores = utils.compare_embeddings(res, all_bops, k=6)
+    ids, scores = utils.compare_embeddings(res, all_bops, k=6)
 
-    recommendations = [{"name": name, "artists": artist, "score": f"{score.item() * 100:.4g}%"} 
-                       for name, artist, score in zip(names, artists, scores)]
+    recommendations = [{"id": id, "score": f"{score.item() * 100:.4g}%"} 
+                       for id, score in zip(ids, scores)]
 
     return render_template("index.html",bop_info=bop_info, recommendations=recommendations)
 
