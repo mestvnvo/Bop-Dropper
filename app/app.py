@@ -8,30 +8,31 @@ db = client.bop_database
 bops = db.bops
 access_token = u.generate_access_token()
 
+# home router; can route to bop if given a valid Spotify track link
 @app.route("/", methods=["GET","POST"])
 def index():
     error = None
     if request.method == "POST":
         bop_link = request.form["bop_link"]
-        if not u.link_validation(bop_link):
-            # HANDLE EDM GENRE OR NOT?
-            error = "Please enter a valid Spotify track link."
+        error = u.link_validation(bop_link, access_token)
+        if error:
+            return render_template("index.html",error=error, in_db=True)
         else:
             bop_id = bop_link.split("/")[-1].split('?')[0]
             return redirect(url_for("get_bop_recs",bop_id=bop_id))
     
     return render_template("index.html", error=error, in_db=True)
 
+# bop router; can route to other bops...
 @app.route("/bop/<bop_id>", methods=["GET","POST"])
 def get_bop_recs(bop_id):
     error = None
     in_db = True
     if request.method == "POST":
         bop_link = request.form["bop_link"]
-        if not u.link_validation(bop_link):
-            # HANDLE EDM GENRE OR NOT?
-            error = "Please enter a valid Spotify track link."
-            return render_template("index.html",error=error)
+        error = u.link_validation(bop_link, access_token)
+        if error:
+            return render_template("index.html",error=error, in_db=in_db)
         else:
             bop_id = bop_link.split("/")[-1].split('?')[0]
             return redirect(url_for("get_bop_recs",bop_id=bop_id))

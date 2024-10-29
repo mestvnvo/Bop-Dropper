@@ -45,11 +45,7 @@ def compare_embeddings(new_bop, collection, k=5):
 
     return top_k_ids, top_k_scores
 
-def link_validation(url):
-    url = url.lower()
-    return url.startswith("https://open.spotify.com/track/")
-
-#  extracts id, name, and artist(s)
+# extracts id, name, and artist(s)
 # output: dict of data
 def extract_bop_data(d):
     bop_info = {}
@@ -67,5 +63,14 @@ def get_bop_info(bop_id, access_token):
     if response.status_code == 200:
         return extract_bop_data(response.json())
     else:
-        print(f"Failed to retrieve bop info: {response.status_code}")
         print(response.json())
+        return None
+
+# validates link, first ensuring it's a track link, then if it's an actual track (not just a series of numbers after /track/)
+# output: None if IS track; str if ISN'T
+def link_validation(url, access_token):
+    id = url.split("/")[-1].split('?')[0]
+    if url.startswith("https://open.spotify.com/track/") and get_bop_info(id, access_token):
+        return None
+    else:
+        return "Please enter a valid Spotify track link."
