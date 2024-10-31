@@ -19,7 +19,7 @@
     {% if error %}
         <p class="error">{{ error }}</p>
     {% else %}
-    <p></p>
+        <p></p>
     {% endif %}
 
     {% if bop_info %}
@@ -33,20 +33,19 @@
     {% endif %}
 
     {% if recommendations %}
-            <ol>
-                {% for rec in recommendations %}
-                    <li>
-                        <p>Similarity Score: {{ rec.score }}</p>
-                        <iframe style="border-radius:12px" 
-                                    src="https://open.spotify.com/embed/track/{{ rec.id }}?utm_source=generator&theme=0"
-                                    width="50%" height="100" frameBorder="0" allowfullscreen=""
-                                    allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                                    loading="lazy">
-                        </iframe>
-                    </li>
-                {% endfor %}
-            </ol>
-        
+        <ol>
+            {% for rec in recommendations %}
+                <li>
+                    <p>Similarity Score: {{ rec.score }}</p>
+                    <iframe style="border-radius:12px" 
+                        src="https://open.spotify.com/embed/track/{{ rec.id }}?utm_source=generator&theme=0"
+                        width="50%" height="100" frameBorder="0" allowfullscreen=""
+                        allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy">
+                    </iframe>
+                </li>
+            {% endfor %}
+        </ol>
     {% else %}
         {% if in_db %}
             <p></p>
@@ -54,6 +53,7 @@
             <h3>Bop not in database...</h3>
         {% endif %}
     {% endif %}
+    
     {% if add_button %}
         <form method="POST">
             <button type="submit">Add Bop to Database</button>
