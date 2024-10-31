@@ -55,6 +55,7 @@ def get_bop_recs(bop_id):
 
     return render_template("index.html",bop_info=bop_info, recommendations=recommendations[1::], in_db=in_db, add_button=False)
 
+# append new bops router; routes back to bop router on completion
 @app.route("/add_bop/<bop_id>", methods=["GET","POST"])
 def add_bop(bop_id):
     if request.method == "POST":

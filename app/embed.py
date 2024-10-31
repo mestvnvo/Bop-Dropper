@@ -4,11 +4,13 @@ import librosa
 import torch
 from transformers import ClapModel, ClapProcessor
 
-# instantiates model/processor
+# instantiates CLAP model/processor
 sampling_rate = 16000
 model = ClapModel.from_pretrained("laion/larger_clap_music")
 processor = ClapProcessor.from_pretrained("laion/larger_clap_music", sampling_rate=sampling_rate)
 
+# gets download link from spotifydown with bop id
+# output: download link
 def get_download_link(id):
     url = f"https://api.spotifydown.com/download/{id}"
 
@@ -36,9 +38,11 @@ def get_download_link(id):
         print("Failed to get download link.")
         return None
 
+# downloads file
+# output: None
 def download_with_link(link):
     response = requests.get(url=link)
-    print(response)
+
     if response.status_code == 200:
         with open("downloaded_file.mp3", "wb") as file:
             file.write(response.content)
@@ -46,7 +50,8 @@ def download_with_link(link):
     else:
         print("Failed to download MP3 file. Status code:", response.status_code)
 
-# embed one bop
+# embed one bop and deletes mp3 file afterwards
+# output: embeddings as a [512] list
 def embed_bop(name):
     mp3_file = os.path.join(f"{name}.mp3")
 
