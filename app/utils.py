@@ -74,3 +74,6 @@ def link_validation(url, access_token):
         return None
     else:
         return "Please enter a valid Spotify track link."
+    
+# generates global access token
+access_token = generate_access_token()
