@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bop Dropper</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
 </head>
 <body>
     <h1><a href="http://127.0.0.1:5000/">Bop Dropper</a></h1>
@@ -27,9 +28,16 @@
             <h2>Searching Bop Recs</h2>
             <p>Bop: {{ bop_info.name }}</p>
             <p>Artists: {{ bop_info.artists | join(', ') }}</p>
+
+            <img src="{{ bop_info.image}}">
         </div>
+        
+        <script>
+        const imageUrl = "{{ bop_info.image | safe }}";
+        setBackgroundImage(imageUrl)
+        </script>
     {% else %}
-        <p></p>
+        <script>setBackgroundImage()</script>
     {% endif %}
 
     {% if recommendations %}
