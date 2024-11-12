@@ -49,9 +49,10 @@ def compare_embeddings(new_bop, collection, k=5):
 # output: dict of data
 def extract_bop_data(d):
     bop_info = {}
-    bop_info["id"] = d.get("id")
-    bop_info["name"] = d.get("name")
+    bop_info["id"] = d["id"]
+    bop_info["name"] = d["name"]
     bop_info["artists"] = [artist.get("name") for artist in d.get("artists", [])]
+    bop_info["image"] = d["album"]["images"][0]["url"]
     return bop_info
 
 # request to extract bop data
