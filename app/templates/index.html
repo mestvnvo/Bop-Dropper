@@ -8,6 +8,8 @@
     <script src="{{url_for('static', filename='js/script.js')}}"></script>
 </head>
 <body>
+    <div class="background"></div>
+
     <h1><a href="http://127.0.0.1:5000/">Bop Dropper</a></h1>
     <div class="bop_link">
         <form method="POST">
@@ -33,7 +35,7 @@
         </div>
         
         <script>
-        const imageUrl = "{{ bop_info.image | safe }}";
+        var imageUrl = "{{ bop_info.image | safe }}";
         setBackgroundImage(imageUrl)
         </script>
     {% else %}
