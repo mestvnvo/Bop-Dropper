@@ -11,10 +11,10 @@
     <div class="background"></div>
 
     <h1><a href="http://127.0.0.1:5000/">Bop Dropper</a></h1>
+    
     <div class="bop_link">
         <form method="POST">
-            <p><label for="bop_link">Add Bop Link</label></p>
-            <p><input type="text" name="bop_link" size="70" placeholder="https://open.spotify.com/track/..."></p>
+            <input type="text" name="bop_link" size="70" placeholder="https://open.spotify.com/track/...">
             <button type="submit">Search</button>
         </form>
     </div>
@@ -22,7 +22,7 @@
     {% if error %}
         <p class="error">{{ error }}</p>
     {% else %}
-        <p></p>
+        <!-- <p></p> -->
     {% endif %}
 
     {% if bop_info %}

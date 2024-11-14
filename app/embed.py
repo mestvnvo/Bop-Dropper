@@ -9,6 +9,8 @@ sampling_rate = 16000
 model = ClapModel.from_pretrained("laion/larger_clap_music")
 processor = ClapProcessor.from_pretrained("laion/larger_clap_music", sampling_rate=sampling_rate)
 
+# THEY PATCHED THIS... T_T
+
 # gets download link from spotifydown with bop id
 # output: download link
 def get_download_link(id):
