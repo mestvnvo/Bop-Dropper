@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bop Dropper</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bop-styles.css')}}">
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
+</head>
+<body>
+    <div class="background"></div>
+
+    <div class="centerContainer">
+        <h1><a href="http://127.0.0.1:5000/">Bop Dropper</a></h1>
+        
+        <div class="bopLink">
+            <form method="POST">
+                <input type="text" name="bop_link" size="70" placeholder="https://open.spotify.com/track/...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% else %}
+        <!-- <p></p> -->
+    {% endif %}
+
+        <div class="bopInfo">
+            <h3>{{ bop_info.name }}</h3>
+            <p class="artists">{{ bop_info.artists | join(', ') }}</p>
+            
+            <img src="{{ bop_info.image}}" class="albumCover">
+        </div>
+        
+        <script>
+            var imageUrl = "{{ bop_info.image | safe }}";
+            setBackgroundImage(imageUrl)
+        </script>
+    <!-- {% if bop_info %}
+    {% else %}
+        <script>setBackgroundImage()</script>
+    {% endif %} -->
+
+    {% if recommendations %}
+    <div class="recs">
+        <h2>Bops dropped:</h2>
+        <ol>
+            {% for rec in recommendations %}
+            <li>
+                <div class="score-and-embed">
+                    <p class="similarity-score">Similarity Score: {{ rec.score }}</p>
+                    <iframe class="spotify-embed" style="border-radius:12px" 
+                            src="https://open.spotify.com/embed/track/{{ rec.id }}?utm_source=generator&theme=0"
+                            width="62.5%" height="80" frameborder="0" allowfullscreen=""
+                            allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+                    </iframe>
+                </div>
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+    {% else %}
+        {% if not_db %}
+            <h3>Bop not in database...</h3>
+        {% else %}
+            <p></p>
+        {% endif %}
+    {% endif %}
+    
+    <!-- {% if add_button %}
+        <form method="POST">
+            <button type="submit">Add Bop to Database</button>
+        </form>
+    {% else %}
+        <p></p>
+    {% endif %} -->
+</body>
+</html>

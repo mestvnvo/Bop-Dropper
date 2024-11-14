@@ -11,7 +11,6 @@ function setBackgroundImage(image_url) {
     backgroundDiv.style.backgroundImage = `url('${image_url}')`;
   } else {
     backgroundDiv.style.backgroundImage = "";
-    document.body.style.backgroundColor = "#121212";
   }
 }
 
@@ -35,7 +34,7 @@ function adjustBackgroundEffects() {
     backgroundDiv.style.height = `${Math.max(viewportHeight, contentHeight)}px`;
 
     // calculate blur based on viewport width, makes blur constant
-    const blurAmount = window.innerWidth * 0.015;
+    const blurAmount = window.innerWidth * 0.005;
     backgroundDiv.style.filter = `blur(${blurAmount}px) brightness(60%)`;
   };
 

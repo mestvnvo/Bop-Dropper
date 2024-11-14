@@ -48,13 +48,13 @@ def get_bop_recs(bop_id):
 
         # get recs
         ids, scores = utils.compare_embeddings(res, all_bops, k=6)
-        recommendations = [{"id": id, "score": f"{score.item() * 100:.4g}%"} 
+        recommendations = [{"id": id, "score": f"{score.item() * 100:.2f}%"} 
                         for id, score in zip(ids, scores)]
     else:
         error = "WIP"
         return render_template("index.html", bop_info=bop_info, error=error, not_db=True)
 
-    return render_template("index.html", bop_info=bop_info, recommendations=recommendations[1::])
+    return render_template("bop.html", bop_info=bop_info, recommendations=recommendations[1::])
 
 # append new bops router; routes back to bop router on completion
 # @app.route("/add_bop/<bop_id>", methods=["GET","POST"])

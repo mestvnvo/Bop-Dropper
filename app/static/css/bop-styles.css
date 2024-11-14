@@ -1,0 +1,137 @@
+/* background */
+.background {
+    position: fixed;
+    width: 100%;
+    z-index: -1;
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: center center;
+    transform: scale(1.1);
+}
+
+html, body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 100vw;
+    color: #f2f2f2;
+    font-family: Helvetica, sans-serif;
+    margin: 10px 25px;
+  }
+
+a {
+    text-decoration: none;
+    color: #f2f2f2;
+}
+
+
+h1 {
+    width: fit-content;
+    font-size: 2.25em;
+}
+
+/* form */
+.bopLink {
+    width: 45%;
+    height: 60px;
+    position: relative;
+}
+
+.bopLink input {
+    border: none;
+    border-radius: 40px;
+    outline: none;
+    padding: 15px 20px;
+    height: 30px;
+    width: 100%;
+    background-color: #1f1f1f;
+    color: #f2f2f2;
+    font-size: 1.2em;
+}
+
+.bopLink ::placeholder {
+    color: #f2f2f2;
+    opacity: 55%;
+}
+
+.bopLink button {
+    border: none;
+    border-radius: 30px;
+    height: 75%;
+    width: 100px;
+    background-color: #10B049;
+    color: #f2f2f2;
+    font-size: 1.2em;
+
+    position: absolute;
+    transform: translatex(32%);
+    right: 0;
+    top: 13%;
+}
+
+.bopLink button:hover {
+    background-color: #176633;
+}
+
+/* bop info bar */
+.bopInfo {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 45%;
+    padding: 70px 20px;
+    text-align: center;
+    height: 100vh;
+    overflow-y: hidden;
+    box-sizing: border-box;
+}
+
+.albumCover {
+    width: 80%;
+    height: auto;
+    margin: 20px auto;
+    display: block;
+}
+
+.bopInfo h3 {
+    font-size: 3.25em;
+    margin: 0;
+}
+
+.artists {
+    font-size: 1.1em;
+}
+
+/* list of results */
+.recs {
+    width: 50%;
+    height: auto;
+    position: relative;
+}
+
+.recs h2 {
+    text-align: center;
+    font-size: 1.5em;
+    margin: 2.5%;
+}
+
+li {
+    margin-bottom: 5%;
+}
+
+.score-and-embed {
+    display: flex;
+    align-items: center;
+}
+
+.similarity-score {
+    margin-right: 3%;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.spotify-embed {
+    flex-grow: 1;
+    width: 60%;
+    height: 80px;
+}
