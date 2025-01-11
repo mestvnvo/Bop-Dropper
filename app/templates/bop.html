@@ -27,17 +27,17 @@
         <!-- <p></p> -->
     {% endif %}
 
-        <div class="bopInfo">
-            <h3>{{ bop_info.name }}</h3>
-            <p class="artists">{{ bop_info.artists | join(', ') }}</p>
-            
-            <img src="{{ bop_info.image}}" class="albumCover">
-        </div>
+    <div class="bopInfo">
+        <h3>{{ bop_info.name }}</h3>
+        <p class="artists">{{ bop_info.artists | join(', ') }}</p>
         
-        <script>
-            var imageUrl = "{{ bop_info.image | safe }}";
-            setBackgroundImage(imageUrl)
-        </script>
+        <img src="{{ bop_info.image}}" class="albumCover">
+    </div>
+    
+    <script>
+        var imageUrl = "{{ bop_info.image | safe }}";
+        setBackgroundImage(imageUrl)
+    </script>
     <!-- {% if bop_info %}
     {% else %}
         <script>setBackgroundImage()</script>
