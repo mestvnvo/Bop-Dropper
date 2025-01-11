@@ -57,6 +57,8 @@ def get_bop_recs(bop_id):
     return render_template("bop.html", bop_info=bop_info, recommendations=recommendations[1::])
 
 # append new bops router; routes back to bop router on completion
+# TEMPORARILY OUT OF SERVICE.. they secured their API :)
+
 # @app.route("/add_bop/<bop_id>", methods=["GET","POST"])
 # def add_bop(bop_id):
 #     if request.method == "POST":
