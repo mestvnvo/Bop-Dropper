@@ -7,7 +7,7 @@ import embed
 
 # start Flask, MongoDB
 app = Flask(__name__)
-client = MongoClient("localhost", 27017)
+client = MongoClient("mongodb://mongo:27017/")
 db = client.bop_database
 bops = db.bops
 
@@ -77,4 +77,4 @@ def get_bop_recs(bop_id):
 #     return render_template("index.html", recommendations=[],in_db=False,add_button=True)
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(host='0.0.0.0', port=5000, debug=False)
