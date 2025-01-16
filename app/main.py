@@ -7,14 +7,15 @@ import embed
 
 # start Flask, MongoDB
 app = Flask(__name__)
-client = MongoClient("mongodb://mongo:27017/")
+client = MongoClient("mongodb://mongo:27017/") # for deployment
+# client = MongoClient("localhost", 27017) # for local debugging purposes
 db = client.bop_database
 bops = db.bops
 
 # validates if link IS a spotify track, if no error then search; otherwise display error
 # output: none, redirect or updates visual
 def handle_link(bop_link):
-    error = utils.link_validation(bop_link, access_token)
+    error = utils.link_validation(bop_link)
     if error:
         return render_template("index.html",error=error)
     else:
@@ -40,7 +41,7 @@ def get_bop_recs(bop_id):
         return handle_link(bop_link)
 
     res = bops.find_one({"id":bop_id})
-    bop_info = utils.get_bop_info(bop_id, access_token)
+    bop_info = utils.get_bop_info(bop_id)
     # if bop IS in database, get recs; otherwise return ...
     # EVENTUALLY ADD OAUTH LOGIN AND WAY FOR PUBLIC TO REC SONGS TO ADD
     if res:
@@ -62,7 +63,7 @@ def get_bop_recs(bop_id):
 # @app.route("/add_bop/<bop_id>", methods=["GET","POST"])
 # def add_bop(bop_id):
 #     if request.method == "POST":
-#         bop_info = u.get_bop_info(bop_id,access_token)
+#         bop_info = u.get_bop_info(bop_id)
 
 #         # downloads & embeds bop
 #         link = e.get_download_link(bop_id)

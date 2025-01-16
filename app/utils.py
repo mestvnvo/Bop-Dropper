@@ -1,11 +1,13 @@
 import torch
 import requests
 import os
+import time
 from dotenv import load_dotenv
 
 # gets spotify key from env to generate access token (lasts 1 hr)
-# output: access token
+# output: none, but sets access_token var
 def generate_access_token():
+    global access_token, token_expiration_time
     load_dotenv()
     SPOTIFY_KEY = os.getenv("SPOTIFY_KEY")
 
@@ -19,16 +21,23 @@ def generate_access_token():
     }
 
     response = requests.post('https://accounts.spotify.com/api/token', headers=headers, data=data)
+    token_expiration_time = time.time() + 3600
 
     if response.status_code == 200:
         token_info = response.json()
         access_token = token_info['access_token']
         print(f"Access Token: {access_token}")
-        return access_token
+        return None
     else:
         print(f"Failed to retrieve token: {response.status_code}")
         print(response.json())
         return None
+
+# if current time has past 1 hr limit of token, refresh token
+# output: none
+def check_token():
+    if time.time() >= token_expiration_time:
+        generate_access_token()
 
 # compares one bop to collection of bops
 # output: top k names, artists, scores
@@ -57,7 +66,9 @@ def extract_bop_data(d):
 
 # request to extract bop data
 # output: dict of data
-def get_bop_info(bop_id, access_token):
+def get_bop_info(bop_id):
+    check_token()
+
     url = f"https://api.spotify.com/v1/tracks/{bop_id}"
     response = requests.get(url, headers={"Authorization": f"Bearer {access_token}"})
 
@@ -69,12 +80,13 @@ def get_bop_info(bop_id, access_token):
 
 # validates link, first ensuring it's a track link, then if it's an actual track (not just a series of numbers after /track/)
 # output: None if IS track; str if ISN'T
-def link_validation(url, access_token):
+def link_validation(url):
     id = url.split("/")[-1].split('?')[0]
-    if url.startswith("https://open.spotify.com/track/") and get_bop_info(id, access_token):
+    if url.startswith("https://open.spotify.com/track/") and get_bop_info(id):
         return None
     else:
         return "Please enter a valid Spotify track link."
     
-# generates global access token
+# instantiate global access_token & exp. time
 access_token = generate_access_token()
+token_expiration_time = 0
