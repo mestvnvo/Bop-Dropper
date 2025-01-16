@@ -13,6 +13,14 @@ services:
     env_file:
       - .env
 
+  mongo:
+    image: mongo:8.0
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - bop_data:/data/db
+
   nginx:
     image: nginx:latest
     ports:
@@ -23,14 +31,6 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
     depends_on:
       - flask-app # ensure flask_app starts before nginx
-
-  mongo:
-    image: mongo:8.0
-    container_name: mongo
-    ports:
-      - "27017:27017"
-    volumes:
-      - bop_data:/data/db
 
 volumes:
   bop_data:
