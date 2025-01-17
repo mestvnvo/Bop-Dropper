@@ -31,7 +31,7 @@ services:
       - flask_app # ensure flask_app starts before nginx
     volumes:
       - ./nginx/bop-dropper.conf:/etc/nginx/conf.d/default.conf
-      - ./certs:/etc/letsencrypt
+      # - ./certs:/etc/letsencrypt
 
 volumes:
   bop_data:
