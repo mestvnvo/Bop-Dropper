@@ -2,12 +2,18 @@ from flask import Flask, render_template, url_for, request, redirect
 from pymongo import MongoClient
 from embed import model, processor
 from utils import access_token
+from dotenv import load_dotenv
 import utils 
 import embed
+import os
+
+load_dotenv()
+mongo_user = os.getenv("MONGO_ROOT_USERNAME")
+mongo_pass = os.getenv("MONGO_ROOT_PASSWORD")
 
 # start Flask, MongoDB
 app = Flask(__name__)
-client = MongoClient("mongodb://mongo:27017/") # for deployment
+client = MongoClient(f"mongodb://{mongo_user}:{mongo_pass}@mongo:27017/") # for deployment
 # client = MongoClient("localhost", 27017) # for local debugging purposes
 db = client.bop_database
 bops = db.bops

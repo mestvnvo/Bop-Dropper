@@ -4,6 +4,7 @@ services:
   flask_app:
     build: .
     container_name: flask_app
+    restart: unless-stopped
     ports:
       - "5000:5000"
     depends_on:
@@ -16,8 +17,13 @@ services:
   mongo:
     image: mongo:8.0
     container_name: mongo
+    restart: unless-stopped
+    command: mongod --auth
     ports:
       - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
     volumes:
       - bop_data:/data/db
 
