@@ -26,7 +26,7 @@ services:
     container_name: nginx
     ports:
       - "8080:80"
-      - "443:443"
+      # - "443:443"
     depends_on:
       - flask_app # ensure flask_app starts before nginx
     volumes:
