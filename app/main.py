@@ -22,6 +22,7 @@ client = MongoClient(f"mongodb://{mongo_user}:{mongo_pass}@mongo:27017/") # for 
 db = client.bop_database
 bops = db.bops
 
+# step 1 of authorization code flow - router; routes to redirect
 @app.route("/login")
 def login():
     scope = "user-read-private"
@@ -31,6 +32,7 @@ def login():
     )
     return redirect(auth_url)
 
+# step 2 of authorization code flow - router; routes back home
 @app.route("/callback")
 def callback():
     code = request.args.get("code")
@@ -88,7 +90,7 @@ def get_bop_recs(bop_id):
 
     return render_template("bop.html", bop_info=bop_info, recommendations=recs[1::])
 
-# append new bops router; routes back to bop router on completion
+# append new bops router; can route to login or other bops
 @app.route("/add_bop/<bop_id>", methods=["GET","POST"])
 def add_bop(bop_id):
     # if bop already exists, redirect to bop router

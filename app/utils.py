@@ -40,7 +40,7 @@ def generate_access_token():
         return None
     
 # follows authorization code flow to check if I am Steven
-# output: 
+# output: validated bool
 def validate_admin(code):
     response = requests.post(
         "https://accounts.spotify.com/api/token",
