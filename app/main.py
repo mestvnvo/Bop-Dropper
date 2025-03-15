@@ -48,40 +48,45 @@ def get_bop_recs(bop_id):
 
     res = bops.find_one({"id":bop_id})
     bop_info = utils.get_bop_info(bop_id)
-    # if bop IS in database, get recs; otherwise return ...
-    # EVENTUALLY ADD OAUTH LOGIN AND WAY FOR PUBLIC TO REC SONGS TO ADD
-    if res:
+
+    # only get recs if bop exists in db, otherwise try to add
+    if not res:
+        return redirect(url_for("add_bop",bop_id=bop_id))
+    else:
         all_bops = list(bops.find())
 
         # get recs
         ids, scores = utils.compare_embeddings(res, all_bops, k=6)
-        recommendations = [{"id": id, "score": f"{score.item() * 100:.2f}%"} 
+        recs = [{"id": id, "score": f"{score.item() * 100:.2f}%"} 
                         for id, score in zip(ids, scores)]
-    else:
-        error = "WIP"
-        return render_template("index.html", bop_info=bop_info, error=error, not_db=True)
 
-    return render_template("bop.html", bop_info=bop_info, recommendations=recommendations[1::])
+    return render_template("bop.html", bop_info=bop_info, recommendations=recs[1::])
 
 # append new bops router; routes back to bop router on completion
-# TEMPORARILY OUT OF SERVICE.. they secured their API :)
+@app.route("/add_bop/<bop_id>", methods=["GET","POST"])
+def add_bop(bop_id):
+    # if bop already exists, redirect to bop router
+    res = bops.find_one({"id":bop_id})
+    if res:
+        redirect(url_for("get_bop_recs",bop_id=bop_id))
 
-# @app.route("/add_bop/<bop_id>", methods=["GET","POST"])
-# def add_bop(bop_id):
-#     if request.method == "POST":
-#         bop_info = u.get_bop_info(bop_id)
+    bop_info = utils.get_bop_info(bop_id)
+    # if add button is clicked
+    if request.method == "POST":
+        # if not validated:
+            # validate
 
-#         # downloads & embeds bop
-#         link = e.get_download_link(bop_id)
-#         e.download_with_link(link)
-#         embeds = e.embed_bop("downloaded_file")
+        # downloads & embeds bop
+        link = embed.get_download_link(bop_id)
+        embed.download_with_link(link)
+        embeds = embed.embed_bop("downloaded_file")
 
-#         # post new bop
-#         bop_info["embedding"] = embeds
-#         bops.insert_one(bop_info)
-#         return redirect(url_for("get_bop_recs",bop_id=bop_id))
+        # post new bop
+        bop_info["embedding"] = embeds
+        bops.insert_one(bop_info)
+        return redirect(url_for("get_bop_recs",bop_id=bop_id))
 
-#     return render_template("index.html", recommendations=[],in_db=False,add_button=True)
+    return render_template("bop.html",bop_info=bop_info,recommendations=[],not_db=True,add_button=True)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=False)

@@ -3,41 +3,57 @@ import os
 import librosa
 import torch
 from transformers import ClapModel, ClapProcessor
+from bs4 import BeautifulSoup
 
 # instantiates CLAP model/processor
 sampling_rate = 16000
 model = ClapModel.from_pretrained("laion/larger_clap_music")
 processor = ClapProcessor.from_pretrained("laion/larger_clap_music", sampling_rate=sampling_rate)
 
-# THEY PATCHED THIS... T_T
+def get_csrf_token(url):
+    session = requests.Session()
+    response = session.get(url, headers={"User-Agent": "Mozilla/5.0"})
+    
+    if response.status_code != 200:
+        print("Failed to load page:", response.status_code)
+        return None, None
 
-# gets download link from spotifydown with bop id
+    # parse html for exposed csrf token & retain cookies
+    soup = BeautifulSoup(response.text, "html.parser")
+    csrf_token = soup.find("meta", {"name": "csrf-token"})
+    csrf_token_value = csrf_token["content"] if csrf_token else None
+
+    cookies = session.cookies.get_dict()
+
+    return csrf_token_value, cookies
+
+# gets download link from spowload with bop id
 # output: download link
 def get_download_link(id):
-    url = f"https://api.spotifydown.com/download/{id}"
+    url = f"https://spowload.com/spotify/track-{id}"
+
+    csrf_token, cookies = get_csrf_token(url)
+
+    if not csrf_token or not cookies:
+        print("Failed to fetch CSRF token or cookies.")
+        return None
 
     headers = {
-    'accept': '*/*',
-    'accept-language': 'en-US,en;q=0.9',
-    'origin': 'https://spotifydown.com',
-    'priority': 'u=1, i',
-    'referer': 'https://spotifydown.com/',
-    'sec-ch-ua': '"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"',
-    'sec-ch-ua-mobile': '?0',
-    'sec-ch-ua-platform': '"Windows"',
-    'sec-fetch-dest': 'empty',
-    'sec-fetch-mode': 'cors',
-    'sec-fetch-site': 'same-site',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36'
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrf_token,
+        "User-Agent": "Mozilla/5.0",
+        "Referer": "https://spowload.com/",
     }
 
-    response = requests.get(url, headers=headers)
+    data = {"urls": f"https://open.spotify.com/track/{id}"}
+
+    response = requests.post("https://spowload.com/convert", json=data, headers=headers, cookies=cookies)
 
     if response.status_code == 200:
-        print(response.json().get("link"))
-        return response.json().get("link")
+        print("Conversion Successful:", response.json())
+        return response.json()["url"]
     else:
-        print("Failed to get download link.")
+        print("Conversion Failed:", response.status_code, response.text)
         return None
 
 # downloads file
