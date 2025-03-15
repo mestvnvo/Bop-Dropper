@@ -135,3 +135,13 @@ li {
     width: 60%;
     height: 80px;
 }
+
+.login {
+    text-decoration: underline;
+    color: #10B049;
+    cursor: pointer;
+}
+
+.login:hover {
+    color: #176633;
+}

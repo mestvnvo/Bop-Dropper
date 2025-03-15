@@ -2,17 +2,23 @@ import torch
 import requests
 import os
 import time
+import base64
 from dotenv import load_dotenv
 
-# gets spotify key from env to generate access token (lasts 1 hr)
+load_dotenv()
+SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
+SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
+
+# follows client credential flow to generate access token
 # output: none, but sets access_token var
 def generate_access_token():
     global access_token, token_expiration_time
-    load_dotenv()
-    SPOTIFY_KEY = os.getenv("SPOTIFY_KEY")
+    
+    cli_info = f"{SPOTIFY_CLIENT_ID}:{SPOTIFY_CLIENT_SECRET}"
+    key = base64.b64encode(cli_info.encode()).decode()
 
     headers = {
-        "Authorization": f"Basic {SPOTIFY_KEY}",
+        "Authorization": f"Basic {key}",
         "Content-Type": "application/x-www-form-urlencoded"
     }
 
@@ -32,6 +38,31 @@ def generate_access_token():
         print(f"Failed to retrieve token: {response.status_code}")
         print(response.json())
         return None
+    
+# follows authorization code flow to check if I am Steven
+# output: 
+def validate_admin(code):
+    response = requests.post(
+        "https://accounts.spotify.com/api/token",
+        data={
+            "grant_type": "authorization_code",
+            "code": code,
+            "redirect_uri": "http://localhost:5000/callback",
+            "client_id": SPOTIFY_CLIENT_ID,
+            "client_secret": SPOTIFY_CLIENT_SECRET,
+        },
+    )
+
+    token_info = response.json()
+
+    if "access_token" not in token_info:
+        return "Failed to authenticate", 400
+
+    access_token = token_info["access_token"]
+
+    headers = {"Authorization": f"Bearer {access_token}"}
+    user_data = requests.get("https://api.spotify.com/v1/me", headers=headers).json()
+    return user_data.get("id") == "12120284727" # (me) - doesn't have to be in .env because you can look it up
 
 # if current time has past 1 hr limit of token, refresh token
 # output: none

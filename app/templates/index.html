@@ -26,10 +26,12 @@
         setupInputTruncation()
     </script>
 
-    {% if error %}
-        <p class="error">{{ error }}</p>
-    {% else %}
-        <!-- <p></p> -->
+    {% if login %}
+        {% if login == "success" %}
+            <h3>Welcome, Steven! :3</h3>
+        {% else %}
+            <h3>You are NOT the Steven! >:[</h3>
+        {% endif %}
     {% endif %}
 </body>
 </html>

@@ -59,18 +59,9 @@
     </div>
     {% else %}
         {% if not_db %}
-            <h3>Bop not in database...</h3>
-        {% else %}
-            <p></p>
+            <h4>Bop not in database...</h4>
+            <h4> <a href="/login" class="login">Log in</a> if you're Steven to add it!</h4>
         {% endif %}
-    {% endif %}
-    
-    {% if add_button %}
-        <form method="POST">
-            <button type="submit">Add Bop to Database</button>
-        </form>
-    {% else %}
-        <p></p>
     {% endif %}
 </body>
 </html>
