@@ -10,6 +10,8 @@ mongo_user = os.getenv("MONGO_ROOT_USERNAME")
 mongo_pass = os.getenv("MONGO_ROOT_PASSWORD")
 SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
 SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
+REDIRECT_URI="bopdropper.com/callback"
+# REDIRECT_URI=http://localhost:5000/callback
 
 # start Flask, MongoDB
 app = Flask(__name__)
@@ -28,7 +30,7 @@ def login():
     scope = "user-read-private"
     auth_url = (
         f"https://accounts.spotify.com/authorize?client_id={SPOTIFY_CLIENT_ID}"
-        f"&response_type=code&redirect_uri=http://localhost:5000/callback&scope={scope}"
+        f"&response_type=code&redirect_uri={REDIRECT_URI}&scope={scope}"
     )
     return redirect(auth_url)
 
