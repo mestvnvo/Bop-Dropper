@@ -100,6 +100,10 @@ def add_bop(bop_id):
 
     bop_info = utils.get_bop_info(bop_id)
 
+    if request.method == "POST":
+        bop_link = request.form["bop_link"]
+        return handle_link(bop_link)
+
     # if I'm logged in
     if session.get("admin"):
         # downloads & embeds bop
