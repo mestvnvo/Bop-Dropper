@@ -10,7 +10,7 @@ mongo_user = os.getenv("MONGO_ROOT_USERNAME")
 mongo_pass = os.getenv("MONGO_ROOT_PASSWORD")
 SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
 SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
-REDIRECT_URI="bopdropper.com/callback"
+REDIRECT_URI="https://bopdropper.com/callback"
 # REDIRECT_URI=http://localhost:5000/callback
 
 # start Flask, MongoDB

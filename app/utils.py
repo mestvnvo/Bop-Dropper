@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
 SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
-REDIRECT_URI="bopdropper.com/callback"
+REDIRECT_URI="https://bopdropper.com/callback"
 # REDIRECT_URI=http://localhost:5000/callback
 
 # follows client credential flow to generate access token
