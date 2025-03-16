@@ -13,6 +13,8 @@ services:
       - FLASK_ENV=development
     env_file:
       - .env
+    volumes:
+      - .:/app
 
   mongo:
     image: mongo:8.0
@@ -24,6 +26,8 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+    env_file:
+      - .env
     volumes:
       - bop_data:/data/db
 
