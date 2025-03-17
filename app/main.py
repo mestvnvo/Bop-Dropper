@@ -6,8 +6,8 @@ import embed
 import os
 
 load_dotenv()
-mongo_user = os.getenv("MONGO_ROOT_USERNAME")
-mongo_pass = os.getenv("MONGO_ROOT_PASSWORD")
+mongo_user = os.getenv("MONGO_INIT_ROOT_USERNAME")
+mongo_pass = os.getenv("MONGO_INIT_ROOT_PASSWORD")
 SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
 SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
 REDIRECT_URI="https://bopdropper.com/callback"
