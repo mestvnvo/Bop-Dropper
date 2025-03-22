@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 # instantiates CLAP model/processor
 sampling_rate = 16000
 model = ClapModel.from_pretrained("laion/larger_clap_music")
-processor = ClapProcessor.from_pretrained("laion/larger_clap_music", sampling_rate=sampling_rate)
+processor = ClapProcessor.from_pretrained("laion/larger_clap_music")
 
 def get_csrf_token(url):
     session = requests.Session()
@@ -80,7 +80,7 @@ def embed_bop(name):
     audio_data, _ = librosa.load(mp3_file, sr=sampling_rate)
 
     # process and embed audio
-    inputs = processor(audios=[audio_data], return_tensors="pt")
+    inputs = processor(audios=[audio_data], sampling_rate=sampling_rate, return_tensors="pt")
     with torch.no_grad():
         audio_embed = model.get_audio_features(**inputs)
 
