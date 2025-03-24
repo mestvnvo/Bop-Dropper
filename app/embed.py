@@ -6,7 +6,7 @@ from transformers import ClapModel, ClapProcessor
 from bs4 import BeautifulSoup
 
 # instantiates CLAP model/processor
-sampling_rate = 16000
+sampling_rate = 48000
 model = ClapModel.from_pretrained("laion/larger_clap_music")
 processor = ClapProcessor.from_pretrained("laion/larger_clap_music")
 
