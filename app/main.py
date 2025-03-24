@@ -98,7 +98,7 @@ def add_bop(bop_id):
     # if bop already exists, redirect to bop router
     res = bops.find_one({"id":bop_id})
     if res:
-        redirect(url_for("get_bop_recs",bop_id=bop_id))
+        return redirect(url_for("get_bop_recs",bop_id=bop_id))
 
     bop_info = utils.get_bop_info(bop_id)
 
@@ -111,7 +111,13 @@ def add_bop(bop_id):
         # downloads & embeds bop
         link = embed.get_download_link(bop_id)
         embed.download_with_link(link)
-        embeds = embed.embed_bop("downloaded_file")
+        
+        try:
+            embeds = embed.embed_bop("downloaded_file")
+        except:
+            os.remove("downloaded_file.mp3")
+            print(f"file deleted successfully.")
+            return
 
         # post new bop
         bop_info["embedding"] = embeds
