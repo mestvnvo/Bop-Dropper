@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for, request, redirect, session
 from pymongo import MongoClient
 from dotenv import load_dotenv
+from transformers import ClapModel, ClapProcessor
 import utils 
 import embed
 import os
@@ -42,6 +43,10 @@ def callback():
 
     if valid:
         session["admin"] = True  # store admin session in a temporary session cookie
+        global model, processor
+        model = ClapModel.from_pretrained("laion/larger_clap_music")
+        processor = ClapProcessor.from_pretrained("laion/larger_clap_music")
+
         return redirect(url_for("index",login="success"))
     
     return redirect(url_for("index",login="failed"))

@@ -2,13 +2,11 @@ import requests
 import os
 import librosa
 import torch
-from transformers import ClapModel, ClapProcessor
 from bs4 import BeautifulSoup
+from main import model, processor
 
 # instantiates CLAP model/processor
 sampling_rate = 48000
-model = ClapModel.from_pretrained("laion/larger_clap_music")
-processor = ClapProcessor.from_pretrained("laion/larger_clap_music")
 
 def get_csrf_token(url):
     session = requests.Session()
