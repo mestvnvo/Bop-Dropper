@@ -3,7 +3,6 @@ import os
 import librosa
 import torch
 from bs4 import BeautifulSoup
-from main import model, processor
 
 # instantiates CLAP model/processor
 sampling_rate = 48000
@@ -68,7 +67,7 @@ def download_with_link(link):
 
 # embed one bop and deletes mp3 file afterwards
 # output: embeddings as a [512] list
-def embed_bop(name):
+def embed_bop(name, model, processor):
     mp3_file = os.path.join(f"{name}.mp3")
 
     if not os.path.isfile(mp3_file):

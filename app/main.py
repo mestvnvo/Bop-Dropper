@@ -118,7 +118,7 @@ def add_bop(bop_id):
         embed.download_with_link(link)
         
         try:
-            embeds = embed.embed_bop("downloaded_file")
+            embeds = embed.embed_bop("downloaded_file", model, processor)
         except:
             os.remove("downloaded_file.mp3")
             print(f"file deleted successfully.")
