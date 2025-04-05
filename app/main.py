@@ -44,7 +44,7 @@ def callback():
     if valid:
         session["admin"] = True  # store admin session in a temporary session cookie
         global model, processor
-        model = ClapModel.from_pretrained("laion/larger_clap_music")
+        model = ClapModel.from_pretrained("laion/larger_clap_music",low_cpu_mem_usage=True)
         processor = ClapProcessor.from_pretrained("laion/larger_clap_music")
 
         return redirect(url_for("index",login="success"))
