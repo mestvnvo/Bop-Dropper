@@ -7,9 +7,20 @@ from bs4 import BeautifulSoup
 
 # instantiates CLAP model/processor
 sampling_rate = 48000
-model = ClapModel.from_pretrained("laion/larger_clap_music")
-processor = ClapProcessor.from_pretrained("laion/larger_clap_music")
+model = None
+processor = None
 
+# implements lazy singleton because droplet keeps crashing on second embed
+# output: model, processor
+def get_model_and_processor():
+    global model, processor
+    if model is None or processor is None:
+        model = ClapModel.from_pretrained("laion/larger_clap_music")
+        processor = ClapProcessor.from_pretrained("laion/larger_clap_music")
+    return model, processor
+
+# steals csrf token in a BS4 session
+# output: POST creds
 def get_csrf_token(url):
     session = requests.Session()
     response = session.get(url, headers={"User-Agent": "Mozilla/5.0"})
@@ -78,6 +89,7 @@ def embed_bop(name):
         return None
 
     audio_data, _ = librosa.load(mp3_file, sr=sampling_rate)
+    model, processor = get_model_and_processor()
 
     # process and embed audio
     inputs = processor(audios=[audio_data], sampling_rate=sampling_rate, return_tensors="pt")
